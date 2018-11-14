@@ -8,7 +8,7 @@ A bridge between Alexa Skills and the Azure Bot Service
 
 # Overview
 
-This is a simple restify-based server that acts as a bridge between an Alexa Skill and the Azure Bot Service. Utterances originating at an Alexa endpoint e.g. an Echo device are received by this bridge, translated and forwarded to the Microsoft Bot Framework. Replies coming back from the Bot are then returned to the originating endpoint. Alexa will read out the text in the `Text` field of the Bot reply.
+This is a simple restify-based server that acts as a bridge between an Alexa Skill and a Azure Bot Service. Requests originating at an Alexa endpoint, e.g. an Echo device, are received by this bridge, translated and forwarded to the Microsoft Bot Framework. Replies coming back from the Bot are then returned to the originating endpoint. Alexa will read out the text in the `Text` field of the Bot reply.
 
 # HowTo
 
@@ -101,6 +101,10 @@ Configure the Service Endpoint Type as follows
 
 To test the solution type a phrase into the Service Simulator - Enter Utterance text field - this should invoke your application below as long as the alexa-bridge is running.
 
+Suggested format: "Ask <invocation_name>, <sample_utterance>"
+
+e.g. "Ask testbot, to get me pizza"
+
 ### Configure Bot
 
 Take the public endpoint for the 3979 (or whatever you choose) port and use as the messaging endpoint in the configration for the Microsoft bot.
@@ -108,7 +112,7 @@ Take the public endpoint for the 3979 (or whatever you choose) port and use as t
 ## Start the alexa-bridge
 
 The easiest way to deploy this is to use the `Deploy to Azure` button above, all the following settings will automatically be setup for you.  Recommend that you deploy this to the same data center to where you Azure Bot Service is reduce latency between the Alexa <> Bridge <> Bot.
-The bridge will automatically start after deployment so should be good to go.
+The bridge will automatically start after deployment, so it should be good to go.
 
 ### Configuring the alexa-bridge
 
@@ -193,10 +197,10 @@ Deploys straight into a Resource Group, just provide the Application Settings du
 
 
 [Publish using Azure CLI](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-get-started-nodejs)
-Alternatively you can do this using the Azure portal. One thing I did find is that you may need to use the B1 Basic or above for the app service plan and host it in the same location as the Alexa skill and the bot to reduce latency. Free or shared app services don't support always on which means there is a long startup time for the bot/bridge which can lead to timeouts as Alexa will only wait 8 seconds for a response before timing out.
+Alternatively you can do this using the Azure portal. I found something intersting: you may need to use the B1 Basic or above for the app service plan, and host this bridge in the same location as the Alexa skill and the bot to reduce latency. Free or shared app services don't always support, which means there may be long startup times for the bot/bridge. This may lead to timeouts as Alexa only waits for 8 seconds for a response before timing out.
 
 [Watch](https://azure.microsoft.com/en-us/resources/videos/create-a-nodejs-site-deploy-from-github/) or [Read](https://docs.microsoft.com/en-us/bot-framework/deploy-bot-github) more on deploying node.js websites to azure.
 
-The key thing is that once the app is deployed to the app service you need to go to application settings and load the values from the .env file into the app settings panel.
+The key thing is that once the app is deployed to the app service, you need to go to application settings and load the values from the .env file onto the app settings panel.
 
-You may also need to regenerate the npm packages on the server using [Kudu](https://github.com/projectkudu/kudu/) navigate to https://*****.scm.azurewebsites.net (where ***** is the name of your Web App) and running npm install against the Debug console / CMD / site / wwwroot directory. 
+You may also need to regenerate the npm packages on the server using [Kudu](https://github.com/projectkudu/kudu/) navigate to https://*****.scm.azurewebsites.net (where ***** is the name of your Web App) and run npm install against the Debug console / CMD / site / wwwroot directory. 
